@@ -1,5 +1,12 @@
-#ifndef LINKED_LIST
-#define LINKED_LIST
+/*
+ * Author: Enes Kaya ÖCAL
+ * Purpose: Dynamic linked list operations
+ * Date : 24.02.2018
+ * Language:  C
+ */
+
+#ifndef LINKED_LIST_H_
+#define LINKED_LIST_H_
 
 #define LINKED_LIST_LOG
 
@@ -32,6 +39,5 @@ void swap_elements(Node** root, Node* a_node, int b_node);//TODO:
 int get_item_id(Node* root, Node* target_ptr);
 void inverse_list(Node** root);
 int count(Node* root);
-#endif
 
-
+#endif /* LINKED_LIST_H_ */

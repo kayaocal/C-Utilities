@@ -1,5 +1,10 @@
+/*
+ * Author: Enes Kaya ÖCAL
+ * Purpose: Dynamic linked list operations
+ * Date : 24.02.2018
+ * Language:  C
+ */
 #include "LinkedList.h"
-
 
 Node* create_node(void* item)
 {
