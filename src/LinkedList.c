@@ -342,6 +342,129 @@ void insert_by_index(Node** root, void* item, int index)
 	linked_list_log("LinkedList::insert_by_index - finished");
 }
 
+void inverse_list(Node** root)
+{
+	linked_list_log("LinkedList::inverse_list - started");
+	Node* m_node = *root;
+	Node* temp;
+	Node* last;
+	Node* tempNode;
+	while(m_node != NULL)
+	{
+		if(m_node->next == NULL)
+		 	last = m_node;
+		 tempNode = m_node;
+		 m_node = m_node->next;
+
+		 temp = tempNode->prev;
+		 tempNode->prev = tempNode->next;
+		 tempNode->next = temp;
+	}
+
+	*root = last;
+	linked_list_log("LinkedList::inverse_list - finished");
+}
+
+void swap_elements_by_id(Node** root, int a, int b)
+{
+	linked_list_log("LinkedList::swap_elements_by_id - started");
+
+	if(a == b)
+	{
+		return;
+	}
+
+	int big = b;
+	int small = a;
+
+	if(a>b)
+	{
+		small = b;
+		big = a;
+	}
+
+	if(b>a)
+	{
+		small = a;
+		big = b;
+	}
+
+	Node* a_node = get_node_by_index(*root, small);
+	Node* b_node = get_node_by_index(*root, big);
+
+	if(big - small == 1)//sequential
+	{
+		if(a_node->prev == NULL)//first item
+		{
+			*root = b_node;
+		}else
+		{
+			a_node->prev->next = b_node;
+		}
+
+		if(b_node->next != NULL)
+		{
+		   b_node->next->prev = a_node;
+		}
+
+		Node* t_node = a_node->next;
+		a_node->next = b_node->next;
+		b_node->prev = a_node->prev;
+		b_node->next = a_node;
+		a_node->prev = b_node;
+
+
+	}else
+	{
+		
+		if(a_node->prev == NULL)//first item
+		{
+			*root = b_node;
+		}else
+		{
+			a_node->prev->next = b_node;
+		}
+
+		if(b_node->next != NULL)
+		{
+			b_node->next->prev = a_node;
+		}
+
+		if(b_node->prev != NULL)
+		{
+			b_node->prev->next = a_node;
+		}
+
+		if(a_node->next != NULL)
+		{
+			a_node->next->prev = b_node;
+		}
+
+		Node* t_node = b_node->prev;
+		b_node->prev = a_node->prev;
+		a_node->prev = t_node;
+
+		t_node = b_node->next;
+		b_node->next = a_node->next;
+		a_node->next = t_node;
+	
+	}
+
+	linked_list_log("LinkedList::swap_elements_by_id - started");
+}
+
+int get_item_id(Node* root, Node* target_ptr)
+{
+	int counter = 0;
+	while(root != target_ptr && root != NULL)
+	{
+		root = root->next;
+		counter++;
+	}
+	
+	return counter;
+}
+
 void free_ptr(void** ptr)
 {
 	linked_list_log("LinkedList::free_ptr - started");
