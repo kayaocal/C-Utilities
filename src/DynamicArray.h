@@ -41,4 +41,7 @@ typedef struct VoidArray
 
 IntegerArray* create_int_array(int size);
 
+
+void dynamic_array_log(char* str);
+
 #endif /* DYNAMIC_ARRAY_H_ */
