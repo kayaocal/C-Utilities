@@ -27,5 +27,10 @@ int bm_set_int(int data, int bit_count);
 
 void bm_draw_map();
 
+int bm_set_int_optional(int data, int bit_count, bool is_active);
+
+int bm_get_int_optional(int bit_count, int current_value);
+
+int bm_get_int(int bit_count);
 
 #endif //BIT_MAPPER
