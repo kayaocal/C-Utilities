@@ -30,7 +30,6 @@ int bm_write_bit(int bit, int byte_c, int bit_c)
 		bit_c%=BYTE;
 		if(byte_c < bm_byte_cursor + divider)
 		{
-			printf("\n new_line ");
 			byte_c++;
 			bm_data[byte_c] = 0;
 		}
@@ -58,6 +57,7 @@ int bm_set_int(int data, int bit_count)
 			data = data >> first_part;
 			bm_byte_cursor++;
 			bm_bit_cursor = 0;
+			bm_data[bm_byte_cursor] = 0;
 		}
 
 	}while(bit_count > 0);
@@ -71,15 +71,16 @@ int bm_set_int_optional(int data, int bit_count, bool is_active)
 	{
 		return bm_set_int(0, 1);
 	}
-	
 	bm_set_int(1, 1);
+	
+
 	return bm_set_int(data, bit_count);
 }
 
 int bm_get_int_optional(int bit_count, int current_value)
 {
 	int is_active = bm_get_int(1);
-	if(is_active)
+	if(is_active == 1)
 	{
 		return bm_get_int(bit_count);
 	}
@@ -90,24 +91,31 @@ int bm_get_int_optional(int bit_count, int current_value)
 int bm_get_int(int bit_count)
 {
 	int value = 0;
-	int byte_to_read = bm_byte_cursor;
-
-	int l_bit_count = bm_bit_cursor + bit_count;
-	for(char i = bm_bit_cursor; i < l_bit_count; i++)
-	{	
-		int divider = i / BYTE;
-		if(byte_to_read < bm_byte_cursor + divider)
+	int local_cursor = 0;
+	do
+	{
+		if(bm_bit_cursor+bit_count < BYTE)
 		{
-			byte_to_read ++;
+			value |= ((bm_data[bm_byte_cursor]>>bm_bit_cursor)&((1<<bit_count)-1)) << local_cursor;
+			bm_bit_cursor+=bit_count;
+			bit_count = 0;
+		}
+		else
+		{
+			int first_part = BYTE - bm_bit_cursor;
+			bit_count -= first_part;
+			int loc_value = ((bm_data[bm_byte_cursor]>>bm_bit_cursor)&((1<<first_part)-1));
+			value |= (loc_value<<local_cursor);
+			local_cursor+=first_part;
+			bm_byte_cursor++;
+			bm_bit_cursor = 0;
 		}
 
-		int bit = (bm_data[byte_to_read] >> (i%BYTE)) & 1;
-		value |= (bit << ( i - bm_bit_cursor));
 	}
-	bm_byte_cursor += l_bit_count / BYTE;
-	bm_bit_cursor = l_bit_count % BYTE;
+	while(bit_count > 0);
 
 	return value;
+
 }
 
 void bm_draw_map()
