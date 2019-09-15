@@ -1,0 +1,1 @@
+g++ test.c -o bit_mapper.exe| timeout /T 5 /NOBREAK

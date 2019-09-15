@@ -1,0 +1,1 @@
+g++ test.c -o bit_mapper.exe
